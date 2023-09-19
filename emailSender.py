@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 # Import modules
-import qrGenerator
+from qrGenerator import *
 from walletPass import *
 import smtplib, ssl
 ## email.mime subclasses
@@ -82,8 +82,8 @@ def email_sender(email_to,destino,saveLink):
     parteHtml = MIMEText(html, "html")
     email_message.attach(parteHtml)
 
-    attach_file_to_email(email_message, '/home/samuel/Desktop/prototipoPase/resources/contratoQR.png', {'Content-ID': '<qrcodeid>'})
-    attach_file_to_email(email_message, '/home/samuel/Desktop/prototipoPase/resources/wallet-button.png', {'Content-ID': '<walletButtonid>'})
+    attach_file_to_email(email_message, '/home/samuel/Desktop/googleWallet_prototipo/resources/contratoQR.png', {'Content-ID': '<qrcodeid>'})
+    attach_file_to_email(email_message, '/home/samuel/Desktop/googleWallet_prototipo/resources/wallet-button.png', {'Content-ID': '<walletButtonid>'})
     #attach_file_to_email(email_message, f'contrato.pdf')
 
     email_string = email_message.as_string()

@@ -5,9 +5,14 @@ from walletPass import *
 from emailSender import *
 from views import console
 
+#---------------Variable de entorno---------------------
+#GOOGLE_APPLICATION_CREDENTIALS=/home/samuel/Desktop/documentos-wallet/clave-googleWallet-mm-maneds-prod.json ./paseMenu.py
 #--------------------------------------------------------GENERAR PASE PARA GOOGLE WALLET-----------------------------------------------------------------------#
 
 name="Catedra"
+issuer="3388000000022205571"
+#Issuer ID de mis pruebas, el que esta puesto es el de MM
+#3388000000022217743
 clase="claseLoyaltyPepePhone"+name
 objeto="objetoLealtadPepe"+name
 img_url="https://i.ibb.co/0j6vB0g/junio-playa.png"
@@ -35,22 +40,22 @@ while True:
     opcion = console.seleccionar_opcion()
 
     if opcion == "1":
-        pase.create_class("3388000000022217743",clase,name)
-        pase.create_object("3388000000022217743",clase,objeto)
-        #pase.patch_class("3388000000022217743",clase)
-        #pase.update_class("3388000000022217743",clase)
+        pase.create_class(issuer,clase,name)
+        pase.create_object(issuer,clase,objeto)
+        #pase.patch_class(issuer,clase)
+        #pase.update_class(issuer,clase)
 
     elif opcion == "2":
         #-----UPDATE----modifica el objeto por completo y lo sobreescribe
-        pase.update_object("3388000000022217743",clase,objeto)
+        pase.update_object(issuer,clase,objeto)
         #-----PATCH-----Modifica el objeto al completo, pero los campos que no toquen no se actualizan
-        #pase.patch_object("3388000000022217743",clase,objeto)
+        #pase.patch_object(issuer,clase,objeto)
 
     elif opcion == "3":
-        pase.patch_main_img("3388000000022217743",objeto,img_url)
+        pase.patch_main_img(issuer,objeto,img_url)
 
     elif opcion == "4":
-        pase.patch_offer("3388000000022217743",objeto,offer_url)
+        pase.patch_offer(issuer,objeto,offer_url)
 
     elif opcion == "5":
         # Realiza las operaciones correspondientes a la opción 4
@@ -62,7 +67,7 @@ while True:
             if accion == "pop" or accion== "add":
                 break
             
-        pase.patch_add_text("3388000000022217743",objeto,accion)
+        pase.patch_add_text(issuer,objeto,accion)
 
     elif opcion == "6":
         #------Modify text item
@@ -81,19 +86,19 @@ while True:
                 text_id=opciones[text_id-1]
                 break
 
-        pase.patch_modify_text("3388000000022217743",objeto,text_id)
+        pase.patch_modify_text(issuer,objeto,text_id)
     
     elif opcion=="7":
-        pase.patch_gigas("3388000000022217743",objeto,30)
+        pase.patch_gigas(issuer,objeto,30)
 
     elif opcion == "8":
         #Genera el link para añadir a wallet
-        saveLink=pase.create_jwt_new_objects("3388000000022217743",clase,objeto)
+        saveLink=pase.create_jwt_new_objects(issuer,clase,objeto)
         print("\n")
         email_sender("pruebas.catedra.masmovil@gmail.com",name,saveLink)
 
     elif opcion == "0":
-        pase.update_object("3388000000022217743",clase,objeto)
+        pase.update_object(issuer,clase,objeto)
         print('\033[92m' + "***********************" + '\033[0m')
         print("Saliendo del menú...")
         break
@@ -101,7 +106,7 @@ while True:
         print("Opción inválida. Por favor, selecciona una opción válida.")
 
 
-#pase.object_group("3388000000022217743","claseLoyaltyPepePhone","objetoLealtadPepe",3)
+#pase.object_group(issuer,"claseLoyaltyPepePhone","objetoLealtadPepe",3)
 
 
 

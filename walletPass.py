@@ -1,22 +1,3 @@
-#
-# Copyright 2022 Google Inc. All rights reserved.
-#
-#
-# Licensed under the Apache License, Version 2.0 (the "License"); you may not
-# use this file except in compliance with the License. You may obtain a copy of
-# the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-# License for the specific language governing permissions and limitations under
-# the License.
-#
-
-# [START setup]
-# [START imports]
 import json
 import os
 import uuid
@@ -24,7 +5,7 @@ import uuid
 from google.auth.transport.requests import AuthorizedSession
 from google.oauth2.service_account import Credentials
 from google.auth import jwt, crypt
-# [END imports]
+
 
 
 class DemoLoyalty:
@@ -582,5 +563,41 @@ class DemoLoyalty:
         print(f'https://pay.google.com/gp/v/save/{token}')
 
         return f'https://pay.google.com/gp/v/save/{token}'
-
     # [END jwtNew]
+    
+    def expire_object(self, issuer_id: str, object_suffix: str) -> str:
+        """Expire an object.
+
+        Sets the object's state to Expired. If the valid time interval is
+        already set, the pass will expire automatically up to 24 hours after.
+
+        Args:
+            issuer_id (str): The issuer ID being used for this request.
+            object_suffix (str): Developer-defined unique ID for the pass object.
+
+        Returns:
+            The pass object ID: f"{issuer_id}.{object_suffix}"
+        """
+
+        # Check if the object exists
+        response = self.http_client.get(
+            url=f'{self.object_url}/{issuer_id}.{object_suffix}')
+
+        if response.status_code == 404:
+            print(f'Object {issuer_id}.{object_suffix} not found!')
+            return f'{issuer_id}.{object_suffix}'
+        elif response.status_code != 200:
+            # Something else went wrong...
+            print(response.text)
+            return f'{issuer_id}.{object_suffix}'
+
+        # Patch the object, setting the pass as expired
+        patch_body = {'state': 'EXPIRED'}
+
+        response = self.http_client.patch(
+            url=f'{self.object_url}/{issuer_id}.{object_suffix}',
+            json=patch_body)
+
+        print('Object expiration response')
+        print(response.text)
+

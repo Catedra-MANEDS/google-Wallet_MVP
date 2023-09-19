@@ -9,4 +9,4 @@ def qrGenerator(data):
     qr.add_data(data)
     qr.make(fit = True)
     img = qr.make_image(fill_color = 'black', back_color = 'white')
-    img.save('/home/samuel/Desktop/prototipoPase/resources/contratoQR.png')
+    img.save("/home/samuel/Desktop/googleWallet_prototipo/resources/contratoQR.png")
